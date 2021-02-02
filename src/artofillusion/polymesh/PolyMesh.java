@@ -1300,10 +1300,11 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
 	 * @return A duplicate of the winged mesh object
 	 */
 
-	public Object3D duplicate() {
-		PolyMesh mesh = new PolyMesh();
-		mesh.copyObject(this);
-		return mesh;
+        @Override
+	public PolyMesh duplicate() {
+            PolyMesh mesh = new PolyMesh();
+            mesh.copyObject(this);
+            return mesh;
 	}
 
 	/**
@@ -3255,7 +3256,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
 
 	/**
 	 * Call this method after a call to convertToTriangleMesh() to know how the
-	 * new vertices are defined relative to the orignal polymesh vertices.
+	 * new vertices are defined relative to the original polymesh vertices.
 	 * 
 	 * @return The vertex parameter information that defines each vertex
 	 *         relative to original vertices. For each vertex, a value is
@@ -6194,7 +6195,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
 									}
 								}
 								if (!found) {
-									System.out.println("Pas trouv !!");
+                                                                    System.out.println("Not found!!!");
 								}
 							} else {
 								newFaceVertFaceRef[j][k] = -1;
@@ -6257,7 +6258,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
 										}
 									}
 									if (!found) {
-										System.out.println("Pas trouv !!");
+										System.out.println("Not found!!!");
 									}
 								}
 								newval[j][k] = val;
