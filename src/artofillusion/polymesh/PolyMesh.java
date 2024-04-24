@@ -70,7 +70,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Winged edge mesh implementation for Art of Illusion.
+ * Winged-edge mesh implementation for Art of Illusion.
  * 
  * @author Francois Guillet
  */
@@ -5313,8 +5313,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
         skeleton = new Skeleton();
     }
 
-    private void readData(DataInputStream in, Scene scene) throws IOException,
-            InvalidObjectException {
+    private void readData(DataInputStream in, Scene scene) throws IOException, InvalidObjectException {
 
         short version = in.readShort();
         if (version < 0 || version > 10)
@@ -5341,8 +5340,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
         }
         edges = new Wedge[in.readInt()];
         for (int i = 0; i < edges.length; i++) {
-            edges[i] = new Wedge(in.readInt(), in.readInt(), in.readInt(), in
-                    .readInt());
+            edges[i] = new Wedge(in.readInt(), in.readInt(), in.readInt(), in.readInt());
             edges[i].smoothness = in.readFloat();
         }
         faces = new Wface[in.readInt()];
@@ -5477,7 +5475,6 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
         // first, edges selection
 
         int faceNum = faces.length;
-        Wedge e;
         Vec3 pt;
         Vec3[] facePos = new Vec3[faces.length];
         for (int i = 0; i < faces.length; ++i) {
@@ -5595,7 +5592,6 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
 
         int face1;
         int face2;
-        Vec3 pt1;
         Vec3 pt2;
         double smoothness, dist;
 
