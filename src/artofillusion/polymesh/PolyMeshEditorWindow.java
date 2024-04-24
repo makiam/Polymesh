@@ -2196,11 +2196,10 @@ public class PolyMeshEditorWindow extends MeshEditorWindow implements
 	 * Smoothes the mesh
 	 */
 	private void doSmoothMesh() {
-		PolyMesh mesh = (PolyMesh) objInfo.object;
-		PolyMesh prevMesh = (PolyMesh) mesh.duplicate();
+		PolyMesh mesh = (PolyMesh) objInfo.getObject();
+		Object3D prevMesh = mesh.duplicate();
 		mesh.smoothWholeMesh(-1, false, 1, true);
-		setUndoRecord(new UndoRecord(this, false, UndoRecord.COPY_OBJECT,
-				new Object[] { mesh, prevMesh }));
+		setUndoRecord(new UndoRecord(this, false, UndoRecord.COPY_OBJECT, mesh, prevMesh));
 		objectChanged();
 		updateImage();
 
