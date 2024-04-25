@@ -1614,8 +1614,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
         while (edges[e.next].vertex != start) {
             ++count;
             if (count > edges.length) {
-                System.out.println("Error in getFaceVertices : face is not closed");
-                System.out.println(f.edge);
+                System.out.println("Error in getFaceVertices : face is not closed: " + f.edge);
                 return -1;
             }
             e = edges[e.next];
@@ -5410,8 +5409,8 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
         if (mirrorState == NO_MIRROR && !onePass) {
             //first, check if this is a quad mesh
             boolean quad = true;
-            for (int i = 0; i < faces.length; i++) {
-                if (getFaceVertCount(faces[i]) != 4) {
+            for (Wface wf: faces) {
+                if (getFaceVertCount(wf) != 4) {
                     quad = false;
                     break;
                 }
@@ -5463,7 +5462,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
         return smoothWholeMesh(tol, calcProjectedEdges, maxNs);
     }
 
-    public QuadMesh smoothWholeMesh(double tol, boolean calcProjectedEdges, int maxNs) {
+    private QuadMesh smoothWholeMesh(double tol, boolean calcProjectedEdges, int maxNs) {
         int ns = 0;
         int originalVert = vertices.length;
         Vec3[] normals = getNormals();
@@ -5579,14 +5578,12 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
 
         for (int i = 0; i < edges.length / 2; ++i) {
             newEdges[i] = new Wedge(edges[i]);
-            newEdges[i].hedge = edges[i].hedge + newEdges.length / 2
-                    - edges.length / 2;
+            newEdges[i].hedge = edges[i].hedge + newEdges.length / 2 - edges.length / 2;
             if (newEdges[i].next >= edges.length / 2)
                 newEdges[i].next += newEdges.length / 2 - edges.length / 2;
             newEdges[newEdges[i].hedge] = new Wedge(edges[edges[i].hedge]);
             if (newEdges[newEdges[i].hedge].next >= edges.length / 2)
-                newEdges[newEdges[i].hedge].next += newEdges.length / 2
-                        - edges.length / 2;
+                newEdges[newEdges[i].hedge].next += newEdges.length / 2 - edges.length / 2;
         }
         for (int i = 0; i < vertices.length; ++i)
             if (newVert[i].edge >= edges.length / 2)
@@ -5599,7 +5596,6 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
 
         // location of old vertices
 
-        int n;
         Vec3 pos, oldPos;
         int v1;
         int v2;
@@ -5616,6 +5612,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
 
         // BLZ algorithm
 
+        int n;
         for (int i = 0; i < originalVert; ++i) {
 
             // adjacent polygons
