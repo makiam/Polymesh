@@ -18,9 +18,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InvalidObjectException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Vector;
+import java.util.*;
 import java.util.prefs.Preferences;
 
 import artofillusion.MeshViewer;
@@ -66,8 +64,6 @@ import artofillusion.ui.Translate;
 import artofillusion.ui.UIUtilities;
 import buoy.widget.BStandardDialog;
 import buoy.widget.RowContainer;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Winged-edge mesh implementation for Art of Illusion.
@@ -106,7 +102,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
     private boolean[] seams; //true if an edge is a seam
     private int[] polyedge; //see getPolyEdge()
     private TriangleMesh triangleMesh; //the triangulated mesh
-    private int interactiveSmoothLevel; //smoothnes levels applied before display (interactive) or triangular smoothing (rendering)
+    private int interactiveSmoothLevel; //smoothness levels applied before display (interactive) or triangular smoothing (rendering)
     private boolean[] subdivideFaces;
     private int[] projectedEdges; //original edges in the case of a smoothed mesh
     private QuadMesh subdividedMesh; //the subdivided mesh when smoothed
@@ -5612,7 +5608,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
 
         // BLZ algorithm
 
-        int n;
+
         for (int i = 0; i < originalVert; ++i) {
 
             // adjacent polygons
@@ -5622,7 +5618,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
                 smoothEdgeValue = new double[ve.length];
             }
             hardnum = 0;
-            n = ve.length;
+
             sharp = 0;
             weight = 0;
             oldPos = newVert[i].r;
@@ -5806,7 +5802,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
         int next;
         for (int i = 0; i < faceNum; ++i) {
             int[] vf = getFaceVertices(faces[i]);
-            n = vf.length / 2;
+            int n = vf.length / 2;
             newFaces[faceCount] = new Wface(count);
             paramFaceTable[faceCount] = i;
             ref1 = faces[i].edge;
@@ -5856,17 +5852,15 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
             count += n;
         }
         if (subdivideFaces != null) {
-            for (int i = 0; i < newFaces.length; i++) {
-                subdivideFaces[i] = true;
-            }
+            Arrays.fill(subdivideFaces, 0, newFaces.length, true);
         }
 
         // Update the texture parameters.
 
         // Per face per vertex texture
 
-        ParameterValue oldParamVal[] = getParameterValues();
-        ParameterValue newParamVal[] = new ParameterValue[oldParamVal.length];
+        ParameterValue[] oldParamVal = getParameterValues();
+        ParameterValue[] newParamVal = new ParameterValue[oldParamVal.length];
         int[][] oldFaceVert = null;
         int[][] newFaceVert = null;
         int[][] newFaceVertFaceRef = null;
@@ -12083,7 +12077,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
             for (int i = 0; i < vertPos.length; i++) {
                 k.vertPos[i] = new Vec3(vertPos[i]);
             }
-                        System.arraycopy(edgeSmoothness, 0, k.edgeSmoothness, 0, edgeSmoothness.length);
+            System.arraycopy(edgeSmoothness, 0, k.edgeSmoothness, 0, edgeSmoothness.length);
             k.paramValue = new ParameterValue[paramValue.length];
             for (int i = 0; i < paramValue.length; i++)
                 k.paramValue[i] = paramValue[i].duplicate();
