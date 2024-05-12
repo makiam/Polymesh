@@ -16,17 +16,12 @@ package artofillusion.polymesh;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import artofillusion.MeshEditorWindow;
 import artofillusion.MeshViewer;
 import artofillusion.RenderingMesh;
 import artofillusion.TextureParameter;
-import artofillusion.TriMeshEditorWindow;
 import artofillusion.UndoRecord;
-import artofillusion.ViewerCanvas;
 import artofillusion.animation.SkeletonTool;
 import artofillusion.math.RGBColor;
 import artofillusion.math.Vec2;
@@ -37,7 +32,6 @@ import artofillusion.polymesh.PolyMesh.Wedge;
 import artofillusion.polymesh.PolyMesh.Wface;
 import artofillusion.polymesh.PolyMesh.Wvertex;
 import artofillusion.polymesh.QuadMesh.QuadEdge;
-import artofillusion.polymesh.QuadMesh.QuadVertex;
 import artofillusion.texture.FaceParameterValue;
 import artofillusion.ui.EditingTool;
 import artofillusion.ui.MeshEditController;
@@ -54,7 +48,6 @@ import artofillusion.view.VertexShader;
 import buoy.event.KeyPressedEvent;
 import buoy.event.MouseClickedEvent;
 import buoy.event.MouseMovedEvent;
-import buoy.event.WidgetEvent;
 import buoy.event.WidgetMouseEvent;
 import buoy.widget.RowContainer;
 
@@ -737,6 +730,7 @@ public class PolyMeshViewer extends MeshViewer
      *            Description of the Parameter
      */
 
+    @Override
     protected void mousePressed(WidgetMouseEvent e)
     {
         PolyMesh mesh = (PolyMesh) getController().getObject().getObject();
@@ -856,7 +850,7 @@ public class PolyMeshViewer extends MeshViewer
         // tool. If it was a
         // shift-click, the user may want to deselect it, so set a flag.
 
-        boolean selected[] = controller.getSelection();
+        boolean[] selected = controller.getSelection();
 
         if (selected[i])
         {
@@ -1138,7 +1132,8 @@ public class PolyMeshViewer extends MeshViewer
 
     /** Set the currently selected tool. */
 
-    public void setTool(EditingTool tool) 
+    @Override
+    public void setTool(EditingTool tool)
     {
         manipulators.clear();
         manipulatorArray = new Manipulator[0];
@@ -1455,6 +1450,7 @@ public class PolyMeshViewer extends MeshViewer
                 return;
     }
 
+    @Override
     public void setPerspective(boolean perspective)
     {
         for (int i = 0; i < manipulatorArray.length; i++)
