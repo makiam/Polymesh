@@ -1467,8 +1467,7 @@ public class PolyMeshViewer extends MeshViewer
       
     private boolean isVertexVisible(int index)
     {
-        boolean visibleOnly = (controller instanceof PolyMeshEditorWindow ? 
-                              ((PolyMeshEditorWindow) controller).isFrontSelectionOn() : false);
+        boolean visibleOnly = controller instanceof PolyMeshEditorWindow && ((PolyMeshEditorWindow) controller).isFrontSelectionOn();
         if (!visibleOnly)
             return true;
 
@@ -1495,8 +1494,7 @@ public class PolyMeshViewer extends MeshViewer
     
     private boolean isEdgeVisible(int index)
     {
-        boolean visibleOnly = (controller instanceof PolyMeshEditorWindow ? 
-                              ((PolyMeshEditorWindow) controller).isFrontSelectionOn() : false);
+        boolean visibleOnly = controller instanceof PolyMeshEditorWindow && ((PolyMeshEditorWindow) controller).isFrontSelectionOn();
         if (!visibleOnly)
             return true;
 
@@ -1517,8 +1515,7 @@ public class PolyMeshViewer extends MeshViewer
     
     private boolean isFaceVisible(int index)
     {
-        boolean visibleOnly = (controller instanceof PolyMeshEditorWindow ? 
-                              ((PolyMeshEditorWindow) controller).isFrontSelectionOn() : false);
+        boolean visibleOnly = controller instanceof PolyMeshEditorWindow && ((PolyMeshEditorWindow) controller).isFrontSelectionOn();
         if (!visibleOnly)
             return true;
 
