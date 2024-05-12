@@ -1258,7 +1258,7 @@ public class PolyMeshViewer extends MeshViewer
                 loop = ed.length / 2;
             if (projectedEdge != null)
                 loop = submesh.getEdges().length / 2;
-            int vv1, vv2;// orv1, orv2;
+            int vv1, vv2;
             for (i = 0; i < loop; i++)
             {
                 int orig;
@@ -1523,9 +1523,6 @@ public class PolyMeshViewer extends MeshViewer
         PolyMesh mesh = (PolyMesh) getController().getObject().getObject();
         Vec3[] normals = mesh.getFaceNormals();
 
-        if (normals[index].dot(viewDir) > 0.0001)
-            return false;
-        else
-            return true;
+        return normals[index].dot(viewDir) <= 0.0001;
     }
 }
