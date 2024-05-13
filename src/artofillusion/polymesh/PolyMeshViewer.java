@@ -61,7 +61,8 @@ import buoy.widget.RowContainer;
 
 public class PolyMeshViewer extends MeshViewer
 {
-    private boolean draggingSelectionBox, dragging;
+    private boolean draggingSelectionBox;
+    private boolean dragging;
     private int deselect;
     private Point[] screenVert;
     private double[] screenZ;
@@ -458,7 +459,10 @@ public class PolyMeshViewer extends MeshViewer
             }
         }
         int index;
-        int f1, f2, v1, v2;
+        int f1;
+        int f2;
+        int v1;
+        int v2;
         boolean isVisible = true;
         int loop = e.length / 2;
         if (mirror)
@@ -1254,7 +1258,8 @@ public class PolyMeshViewer extends MeshViewer
                 loop = ed.length / 2;
             if (projectedEdge != null)
                 loop = submesh.getEdges().length / 2;
-            int vv1, vv2;
+            int vv1;
+            int vv2;
             for (i = 0; i < loop; i++)
             {
                 int orig;
@@ -1472,7 +1477,9 @@ public class PolyMeshViewer extends MeshViewer
         Wvertex[] verts = (Wvertex[]) mesh.getVertices();
         Wedge[] edges = mesh.getEdges();
         Vec3[] normals = mesh.getFaceNormals();
-        int edge, start, face;
+        int edge;
+        int start;
+        int face;
         boolean visibleVert = false;
         start = verts[index].edge;
         edge = start;
