@@ -206,8 +206,7 @@ public class PolyMeshViewer extends MeshViewer
         else 
             drawEdges(screenVec2);
 
-        if (currentTool instanceof SkeletonTool)
-            if (showSkeleton && mesh.getSkeleton() != null)
+        if (currentTool instanceof SkeletonTool && showSkeleton && mesh.getSkeleton() != null)
                 mesh.getSkeleton().draw(this, true);
         // Now draw manipulators
         for (int i = 0; i < manipulatorArray.length; i++)
@@ -1486,9 +1485,8 @@ public class PolyMeshViewer extends MeshViewer
         do 
         {
             face = edges[edge].face;
-            if (face != -1)
-                if (normals[face].dot(viewDir) < 0.0001) 
-                    visibleVert = true;
+            if (face != -1 && normals[face].dot(viewDir) < 0.0001)
+                visibleVert = true;
             edge = edges[edges[edge].hedge].next;
         }
         while (edge != start && !visibleVert);
@@ -1506,8 +1504,7 @@ public class PolyMeshViewer extends MeshViewer
         Wedge[] edges = mesh.getEdges();
         Vec3[] normals = mesh.getFaceNormals();
         boolean visibleEdge = false;
-        if (edges[index].face != -1)
-            if (normals[edges[index].face].dot(viewDir) < 0.0001)
+        if (edges[index].face != -1 && normals[edges[index].face].dot(viewDir) < 0.0001)
                 visibleEdge = true;
         if (edges[edges[index].hedge].face != -1)
             if (normals[edges[edges[index].hedge].face].dot(viewDir) < 0.0001)
