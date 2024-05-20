@@ -17,6 +17,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.List;
 
 import artofillusion.MeshViewer;
 import artofillusion.RenderingMesh;
@@ -68,7 +69,7 @@ public class PolyMeshViewer extends MeshViewer
     private double[] screenZ;
     private Vec2[] screenVec2;
     boolean[] visible;
-    private ArrayList<Manipulator> manipulators;
+    private final List<Manipulator> manipulators = new ArrayList<>();
     private Manipulator[] manipulatorArray;
 
     /**
@@ -84,7 +85,7 @@ public class PolyMeshViewer extends MeshViewer
         super(window, p);
         PolyMesh mesh = (PolyMesh) window.getObject().object;
         visible = new boolean[mesh.getVertices().length];
-        manipulators = new ArrayList<Manipulator>();
+
         manipulatorArray = new Manipulator[0];
         addEventLink(MouseMovedEvent.class, this, "mouseMoved");
         addEventLink(MouseClickedEvent.class, this, "mouseClicked");
@@ -118,7 +119,7 @@ public class PolyMeshViewer extends MeshViewer
 
     public ArrayList<Manipulator> getManipulators()
     {
-        return manipulators;
+        return (ArrayList<Manipulator>) manipulators;
     }
 
     public void removeManipulator(Manipulator manipulator)
