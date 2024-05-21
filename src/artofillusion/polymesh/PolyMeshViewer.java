@@ -147,7 +147,7 @@ public class PolyMeshViewer extends MeshViewer
         }
         int[] invVertTable = mesh.getInvMirroredVerts();
         Wvertex[] v = (Wvertex[]) viewMesh.getVertices();
-        Vec2[] p;
+
 
         // Calculate the screen coordinates of every vertex.
 
@@ -169,11 +169,11 @@ public class PolyMeshViewer extends MeshViewer
         if (project && viewMesh.getSubdividedMesh() != null)
         {
             subMesh = viewMesh.getSubdividedMesh();
-            sv = (MeshVertex[]) subMesh.getVertices();
+            sv = subMesh.getVertices();
         }
         else
-            sv = (MeshVertex[]) viewMesh.getVertices();
-        Vec2 npt;
+            sv = viewMesh.getVertices();
+
         for (int i = 0; i < length; i++)
         {
             Vec3 pos = sv[i].r;
@@ -224,7 +224,7 @@ public class PolyMeshViewer extends MeshViewer
 
         boolean[] hide = null;
         int[] faceIndex = null;
-        PolyMesh polymesh = (PolyMesh) getController().getObject().getObject();
+
         ObjectInfo objInfo = controller.getObject();
         if (controller instanceof PolyMeshEditorWindow && 
             ((PolyMeshEditorWindow) controller).getFaceIndexParameter() != null)
@@ -340,10 +340,10 @@ public class PolyMeshViewer extends MeshViewer
         if (project && viewMesh.getSubdividedMesh() != null)
         {
             subMesh = viewMesh.getSubdividedMesh();
-            sv = (MeshVertex[]) subMesh.getVertices();
+            sv = subMesh.getVertices();
         }
         else
-            sv = (MeshVertex[]) viewMesh.getVertices();
+            sv = viewMesh.getVertices();
 
         for (int i = 0; i < screenVert.length; i++)
         {
