@@ -12307,8 +12307,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
             // Determine which parameter to set.
 
             int which;
-            for (which = 0; which < mesh.texParam.length
-                    && !mesh.texParam[which].equals(p); which++)
+            for (which = 0; which < mesh.texParam.length && !mesh.texParam[which].equals(p); which++)
                 ;
             if (which == mesh.texParam.length)
                 return;
@@ -12329,16 +12328,15 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
             // version
 
             out.writeInt(vertPos.length);
-            for (int i = 0; i < vertPos.length; i++) {
-                vertPos[i].writeToFile(out);
+            for (Vec3 vertPo: vertPos) {
+                vertPo.writeToFile(out);
             }
-            for (int i = 0; i < paramValue.length; i++) {
-                out.writeUTF(paramValue[i].getClass().getName());
-                paramValue[i].writeToStream(out);
+            for (ParameterValue value: paramValue) {
+                out.writeUTF(value.getClass().getName());
+                value.writeToStream(out);
             }
             out.writeInt(edgeSmoothness.length);
-            for (int i = 0; i < edgeSmoothness.length; i++)
-                out.writeFloat(edgeSmoothness[i]);
+            for (float smoothness: edgeSmoothness) out.writeFloat(smoothness);
 
             for (Joint joint: skeleton.getJoints()) {
                 joint.coords.writeToFile(out);
