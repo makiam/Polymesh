@@ -1204,17 +1204,17 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
         maxSmoothness = mesh.maxSmoothness;
         interactiveSmoothLevel = mesh.interactiveSmoothLevel;
         projectedEdges = null;
-        if (mesh.mappingData != null) {
+        if (mesh.mappingData == null) {
+            mappingData = null;
+        } else {
             mappingData = mesh.mappingData.duplicate();
             mappingVerts = mesh.mappingVerts;
             mappingEdges = mesh.mappingEdges;
             mappingFaces = mesh.mappingFaces;
-        } else {
-            mappingData = null;
         }
         if (mesh.seams != null) {
-                  seams = new boolean[mesh.seams.length];
-                  System.arraycopy(mesh.seams, 0, seams, 0, seams.length);
+            seams = new boolean[mesh.seams.length];
+            System.arraycopy(mesh.seams, 0, seams, 0, seams.length);
         }
         useCustomColors = mesh.useCustomColors;
         vertColor = mesh.vertColor;
@@ -11828,8 +11828,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
      */
 
     @Override
-    public void writeToFile(DataOutputStream out, Scene theScene)
-            throws IOException {
+    public void writeToFile(DataOutputStream out, Scene theScene) throws IOException {
         if (theScene != null)
             super.writeToFile(out, theScene);
 
@@ -11837,24 +11836,24 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
         out.writeShort(mirrorState);
         out.writeInt(smoothingMethod);
         out.writeInt(vertices.length);
-        for (int i = 0; i < vertices.length; i++) {
-            vertices[i].r.writeToFile(out);
-            out.writeInt(vertices[i].edge);
-            out.writeInt(vertices[i].ikJoint);
-            out.writeDouble(vertices[i].ikWeight);
-            out.writeShort(vertices[i].type);
+        for (Wvertex vertex : vertices) {
+            vertex.r.writeToFile(out);
+            out.writeInt(vertex.edge);
+            out.writeInt(vertex.ikJoint);
+            out.writeDouble(vertex.ikWeight);
+            out.writeShort(vertex.type);
         }
         out.writeInt(edges.length);
-        for (int i = 0; i < edges.length; i++) {
-            out.writeInt(edges[i].vertex);
-            out.writeInt(edges[i].hedge);
-            out.writeInt(edges[i].face);
-            out.writeInt(edges[i].next);
-            out.writeFloat(edges[i].smoothness);
+        for (Wedge edge : edges) {
+            out.writeInt(edge.vertex);
+            out.writeInt(edge.hedge);
+            out.writeInt(edge.face);
+            out.writeInt(edge.next);
+            out.writeFloat(edge.smoothness);
         }
         out.writeInt(faces.length);
-        for (int i = 0; i < faces.length; i++) {
-            out.writeInt(faces[i].edge);
+        for (Wface face : faces) {
+            out.writeInt(face.edge);
         }
         out.writeBoolean(controlledSmoothing);
         out.writeDouble(minAngle);
@@ -11867,15 +11866,15 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
             out.writeBoolean(false);
         } else {
             out.writeBoolean(true);
-            for (int i = 0; i < seams.length; i++) {
-                out.writeBoolean(seams[i]);
+            for (boolean seam : seams) {
+                out.writeBoolean(seam);
             }
         }
-        if (mappingData != null) {
+        if (mappingData == null) {
+            out.writeBoolean(false);
+        } else {
             out.writeBoolean(true);
             mappingData.writeToFile(out, theScene);
-        } else {
-            out.writeBoolean(false);
         }
         out.writeBoolean(useCustomColors);
         out.writeInt(vertColor.getRed());
@@ -12340,13 +12339,13 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
             out.writeInt(edgeSmoothness.length);
             for (int i = 0; i < edgeSmoothness.length; i++)
                 out.writeFloat(edgeSmoothness[i]);
-            Joint joint[] = skeleton.getJoints();
-            for (int i = 0; i < joint.length; i++) {
-                joint[i].coords.writeToFile(out);
-                out.writeDouble(joint[i].angle1.pos);
-                out.writeDouble(joint[i].angle2.pos);
-                out.writeDouble(joint[i].twist.pos);
-                out.writeDouble(joint[i].length.pos);
+
+            for (Joint joint: skeleton.getJoints()) {
+                joint.coords.writeToFile(out);
+                out.writeDouble(joint.angle1.pos);
+                out.writeDouble(joint.angle2.pos);
+                out.writeDouble(joint.twist.pos);
+                out.writeDouble(joint.length.pos);
             }
         }
 
@@ -12360,8 +12359,7 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
          * @exception InvalidObjectException  Description of the Exception
          */
 
-        public PolyMeshKeyframe(DataInputStream in, Object parent)
-                throws IOException, InvalidObjectException {
+        public PolyMeshKeyframe(DataInputStream in, Object parent) throws IOException, InvalidObjectException {
             this();
             short version = in.readShort();
             if (version < 0 || version > 2)
@@ -12391,13 +12389,13 @@ public class PolyMesh extends Object3D implements Mesh, FacetedMesh {
             }
 
             skeleton = mesh.getSkeleton().duplicate();
-            Joint joint[] = skeleton.getJoints();
-            for (int i = 0; i < joint.length; i++) {
-                joint[i].coords = new CoordinateSystem(in);
-                joint[i].angle1.pos = in.readDouble();
-                joint[i].angle2.pos = in.readDouble();
-                joint[i].twist.pos = in.readDouble();
-                joint[i].length.pos = in.readDouble();
+
+            for (Joint joint: skeleton.getJoints()) {
+                joint.coords = new CoordinateSystem(in);
+                joint.angle1.pos = in.readDouble();
+                joint.angle2.pos = in.readDouble();
+                joint.twist.pos = in.readDouble();
+                joint.length.pos = in.readDouble();
             }
         }
     }
