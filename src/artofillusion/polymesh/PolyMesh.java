@@ -2702,22 +2702,6 @@ public class PolyMesh extends Object3D implements FacetedMesh {
     }
 
     /**
-     * Sets the mesh vertices, edges and faces array. Use this method after
-     * you've changed any mesh feature.
-     * 
-     * @param v
-     * @param e
-     * @param f
-     */
-
-    public void setMeshTopology(Wvertex[] v, Wedge[] e, Wface[] f) {
-        vertices = v;
-        edges = e;
-        faces = f;
-        resetMesh();
-    }
-
-    /**
      * Get the skeleton for the object. If it does not have one, this should return null.
      * 
      * @return The skeleton value
@@ -4959,11 +4943,10 @@ public class PolyMesh extends Object3D implements FacetedMesh {
         boolean newSel[] = new boolean[edges.length];
         int currentEdge = startEdge;
         int currentVert = edges[startEdge].vertex;
-        Vector v = new Vector();
+        List<Vec3> v = new Vector<>();
         Vec3 normDir = null;
 
-        Vec3 vv = vertices[edges[startEdge].vertex].r
-                .minus(vertices[edges[edges[startEdge].hedge].vertex].r);
+        Vec3 vv = vertices[edges[startEdge].vertex].r.minus(vertices[edges[edges[startEdge].hedge].vertex].r);
         if (vv.length() < 1.0e-6)
             v.add(vv);
         while (true) {
@@ -4977,8 +4960,7 @@ public class PolyMesh extends Object3D implements FacetedMesh {
             // Find the next edge which is most nearly parallel to this one.
 
             newSel[currentEdge] = true;
-            Vec3 dir1 = vertices[edges[currentEdge].vertex].r
-                    .minus(vertices[edges[edges[currentEdge].hedge].vertex].r);
+            Vec3 dir1 = vertices[edges[currentEdge].vertex].r.minus(vertices[edges[edges[currentEdge].hedge].vertex].r);
             dir1.normalize();
             int vertEdges[] = getVertexEdges(vertices[edges[currentEdge].vertex]);
             int bestEdge = -1;
@@ -4991,12 +4973,10 @@ public class PolyMesh extends Object3D implements FacetedMesh {
                     for (int i = 0; i < vertEdges.length; i++) {
                         if (vertEdges[i] == edges[currentEdge].hedge)
                             continue;
-                        Vec3 dir2 = vertices[edges[vertEdges[i]].vertex].r
-                                .minus(vertices[edges[edges[vertEdges[i]].hedge].vertex].r);
+                        Vec3 dir2 = vertices[edges[vertEdges[i]].vertex].r.minus(vertices[edges[edges[vertEdges[i]].hedge].vertex].r);
                         dir2.normalize();
                         double dot = dir1.dot(dir2);
-                        if (edges[currentEdge].vertex == edges[vertEdges[i]].vertex
-                                || edges[currentEdge].vertex == edges[vertEdges[i]].vertex)
+                        if (edges[currentEdge].vertex == edges[vertEdges[i]].vertex || edges[currentEdge].vertex == edges[vertEdges[i]].vertex)
                             dot = -dot;
                         if (dot > maxDot) {
                             maxDot = dot;
@@ -5008,8 +4988,7 @@ public class PolyMesh extends Object3D implements FacetedMesh {
                     for (int i = 0; i < vertEdges.length; i++) {
                         if (vertEdges[i] == edges[currentEdge].hedge)
                             continue;
-                        Vec3 dir2 = vertices[edges[vertEdges[i]].vertex].r
-                                .minus(vertices[edges[edges[vertEdges[i]].hedge].vertex].r);
+                        Vec3 dir2 = vertices[edges[vertEdges[i]].vertex].r.minus(vertices[edges[edges[vertEdges[i]].hedge].vertex].r);
                         dir2.normalize();
                         double dot = Math.abs(normDir.dot(dir2));
                         if (dot < minDot) {
@@ -5020,21 +4999,18 @@ public class PolyMesh extends Object3D implements FacetedMesh {
                 }
 
             }
-            vv = vertices[edges[bestEdge].vertex].r
-                    .minus(vertices[edges[edges[bestEdge].hedge].vertex].r);
+            vv = vertices[edges[bestEdge].vertex].r.minus(vertices[edges[edges[bestEdge].hedge].vertex].r);
             if (vv.length() < 1.0e-6)
                 v.add(vv);
             if (v.size() > 1) {
                 normDir = new Vec3();
                 for (int i = 0; i < v.size() - 1; i++) {
-                    normDir.add(((Vec3) v.elementAt(i)).cross((Vec3) v
-                            .elementAt(i + 1)));
+                    normDir.add(v.get(i).cross(v.get(i + 1)));
                 }
                 normDir.normalize();
             }
             currentEdge = bestEdge;
-            currentVert = (edges[currentEdge].vertex == currentVert ? edges[edges[currentEdge].hedge].vertex
-                    : edges[currentEdge].vertex);
+            currentVert = (edges[currentEdge].vertex == currentVert ? edges[edges[currentEdge].hedge].vertex : edges[currentEdge].vertex);
         }
     }
 
